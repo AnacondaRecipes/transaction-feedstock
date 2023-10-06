@@ -10,7 +10,6 @@ source:
   sha256: 65d0b1ea92dbe7c4e3b237fb6bd8b41dea23d7459e7bdd8c3880bffdaf912fa4
 
 build:
-  noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   number: 0
 
@@ -45,7 +44,8 @@ about:
     none of them have any effect. In the transaction package, a transaction
     object represents a running transaction that can be committed or aborted
     in the end.
-  doc_url: http://zodb.readthedocs.org/en/latest/transactions.html
+  dev_url: https://github.com/zopefoundation/transaction
+  doc_url: https://transaction.readthedocs.io/
 
 extra:
   recipe-maintainers:
