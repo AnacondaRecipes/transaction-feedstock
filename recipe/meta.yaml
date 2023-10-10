@@ -1,41 +1,40 @@
 {% set name = "transaction" %}
-{% set version = "3.0.1" %}
-{% set bundle = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash = "0c15ef0b7ff3518357ceea75722a30d974c3f85e11aa5cec5d5a2b6a40cfcf68" %}
+{% set version = "3.1.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  {{ hash_type }}: {{ hash }}
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/transaction-{{ version }}.tar.gz
+  sha256: 65d0b1ea92dbe7c4e3b237fb6bd8b41dea23d7459e7bdd8c3880bffdaf912fa4
 
 build:
-  preserve_egg_dir: True
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   number: 0
-  script: python setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
   host:
     - python
+    - pip
     - setuptools
-
+    - wheel
   run:
     - python
-    - setuptools
     - zope.interface
 
 test:
   imports:
     - transaction
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/zopefoundation/transaction
   license_file: LICENSE.txt
-  license: ZPL 2.1
+  license: ZPL-2.1
   license_family: Other
   summary: 'Transaction management for Python'
   description: |
@@ -45,8 +44,8 @@ about:
     none of them have any effect. In the transaction package, a transaction
     object represents a running transaction that can be committed or aborted
     in the end.
-  doc_url: http://zodb.readthedocs.org/en/latest/transactions.html
-  doc_source_url: https://github.com/cguardia/ZODB-Documentation/blob/master/book/transactions.rst
+  dev_url: https://github.com/zopefoundation/transaction
+  doc_url: https://transaction.readthedocs.io/
 
 extra:
   recipe-maintainers:
