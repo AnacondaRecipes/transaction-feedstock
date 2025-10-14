@@ -1,24 +1,24 @@
 {% set name = "transaction" %}
-{% set version = "3.1.0" %}
+{% set version = "5.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/transaction-{{ version }}.tar.gz
-  sha256: 65d0b1ea92dbe7c4e3b237fb6bd8b41dea23d7459e7bdd8c3880bffdaf912fa4
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/transaction-{{ version }}.tar.gz
+  sha256: 106e7bd782bcc0cb5119fc9225b0c9a71dfc53adb938be905223adaef22b1174
 
 build:
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   number: 0
+  skip: true  # [py<38]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - setuptools <74
   run:
     - python
     - zope.interface
@@ -36,7 +36,7 @@ about:
   license_file: LICENSE.txt
   license: ZPL-2.1
   license_family: Other
-  summary: 'Transaction management for Python'
+  summary: Transaction management for Python
   description: |
     A transaction consists of one or more operations that we want to perform
     as a single action. It's an all or nothing proposition: either all the
