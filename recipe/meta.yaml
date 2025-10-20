@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/transaction-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 106e7bd782bcc0cb5119fc9225b0c9a71dfc53adb938be905223adaef22b1174
 
 build:
@@ -23,13 +23,26 @@ requirements:
     - python
     - zope.interface
 
+# from .. import interfaces
+# E   ImportError: attempted relative import beyond top-level package
+{% set ignore_tests = " --ignore=src/transaction/tests/test__manager.py" %}
+
 test:
+  source_files:
+    - src/transaction/tests
   imports:
     - transaction
+    - transaction._manager
+    - transaction._transaction
+    - transaction.interfaces
+    - transaction.weakset
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v src/transaction/tests {{ ignore_tests }}
   requires:
     - pip
+    - pytest
 
 about:
   home: https://github.com/zopefoundation/transaction
@@ -45,7 +58,7 @@ about:
     object represents a running transaction that can be committed or aborted
     in the end.
   dev_url: https://github.com/zopefoundation/transaction
-  doc_url: https://transaction.readthedocs.io/
+  doc_url: https://transaction.readthedocs.io
 
 extra:
   recipe-maintainers:
