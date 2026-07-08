@@ -1,9 +1,6 @@
 {% set name = "transaction" %}
 {% set version = "5.1" %}
-{% set ignore_tests = " --ignore=src/transaction/tests/test__manager.py" %}
 
-# from .. import interfaces
-# E   ImportError: attempted relative import beyond top-level package
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -15,16 +12,20 @@ source:
 build:
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   number: 0
-  skip: true  # [py<38]
+  skip: true  # [py<310]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools <74
+    - setuptools >=78.1.1,<81
   run:
     - python
     - zope.interface
+
+# from .. import interfaces
+# E   ImportError: attempted relative import beyond top-level package
+{% set ignore_tests = " --ignore=src/transaction/tests/test__manager.py" %}
 
 test:
   source_files:
